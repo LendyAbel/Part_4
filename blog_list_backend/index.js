@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const app = express()
 
@@ -12,13 +13,15 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl)
+const mongoUrl = process.env.MONGODB_URI
+mongoose.connect(mongoUrl).then(res => {
+  console.log('Connected to MongoDB')
+})
 
 app.use(express.json())
 
 app.get('/api/blogs', (request, response) => {
-  Blog.find({}).then((blogs) => {
+  Blog.find({}).then(blogs => {
     response.json(blogs)
   })
 })
@@ -26,7 +29,8 @@ app.get('/api/blogs', (request, response) => {
 app.post('/api/blogs', (request, response) => {
   const blog = new Blog(request.body)
 
-  blog.save().then((result) => {
+  blog.save().then(result => {
+    console.log('POST done')
     response.status(201).json(result)
   })
 })
