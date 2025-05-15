@@ -10,4 +10,8 @@ const totalLikes = blogs => {
   return blogs.length === 0 ? 0 : totalOfLikes
 }
 
+const favoriteBlog = blogs =>{
+  
+}
+
 module.exports = { dummy, totalLikes }
