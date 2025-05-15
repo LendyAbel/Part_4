@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "node --watch index.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "eslint": "^9.26.0",
-    "nodemon": "^3.1.10",
     "prettier": "^3.5.3"
   }
 }
