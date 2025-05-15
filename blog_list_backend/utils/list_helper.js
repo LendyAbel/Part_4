@@ -1,17 +1,18 @@
 const dummy = blogs => 1
 
 const totalLikes = blogs => {
-  //   console.log('BLOGS: ',blogs)
   const totalOfLikes = blogs.reduce((total, blog) => {
-    // console.log('DENTRO DEL REDUCE: ', blog.likes)
-    // console.log('total: ', total)
     return total + blog.likes
   }, 0)
   return blogs.length === 0 ? 0 : totalOfLikes
 }
 
-const favoriteBlog = blogs =>{
-  
+const favoriteBlog = blogs => {
+  const favBlog = blogs.reduce(
+    (fav, blog) => (blog.likes > fav.likes ? blog : fav),
+    { likes: 0 }
+  )
+  return blogs.length === 0 ? 0 : favBlog
 }
 
-module.exports = { dummy, totalLikes }
+module.exports = { dummy, totalLikes, favoriteBlog }
