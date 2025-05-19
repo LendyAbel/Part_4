@@ -27,4 +27,24 @@ const mostBlogs = blogs => {
   return blogs.length === 0 ? 0 : mostCountBlogs
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = blogs => {
+  const groupAuthors = _.groupBy(blogs, 'author')
+  // console.log('***Group authors***', groupAuthors)
+
+  const authorLikes = _.map(groupAuthors, (blogs, author) => {
+    // console.log('dentro del map: ')
+    // console.log('BLOGS', blogs)
+    // console.log('AUTHOR', author)
+    const likes = _.sumBy(blogs, 'likes')
+    // console.log('SUM OF LIKES', likes)
+    return { author, likes }
+  })
+  // console.log('***authorLikes***', authorLikes)
+
+  const mostLikesAuthor = _.maxBy(authorLikes, 'likes')
+  // console.log('***mostLikesAuthor***', mostLikesAuthor)
+
+  return blogs.length === 0 ? 0 : mostLikesAuthor
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
