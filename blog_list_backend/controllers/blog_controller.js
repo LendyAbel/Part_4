@@ -11,11 +11,15 @@ blogRouter.post('/', async (request, response) => {
     request.body.likes = 0
   }
 
-  const newBlog = new Blog(request.body)
+  if (!request.body.title || !request.body.url) {
+    response.status(400).end()
+  } else {
+    const newBlog = new Blog(request.body)
 
-  const savedBlog = await newBlog.save()
-  console.log('POST done')
-  response.status(201).json(savedBlog)
+    const savedBlog = await newBlog.save()
+    console.log('POST done')
+    response.status(201).json(savedBlog)
+  }
 })
 
 module.exports = blogRouter

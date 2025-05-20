@@ -46,7 +46,7 @@ test('http post', async () => {
   assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length + 1)
 })
 
-test.only('checking "likes" property', async () => {
+test('checking "likes" property', async () => {
   const newBlog = {
     _id: '5a422bc61b54a676234d17fc',
     title: 'Type wars',
@@ -61,6 +61,27 @@ test.only('checking "likes" property', async () => {
   const afterPostBlog = blogFound.toJSON()
 
   assert.strictEqual(afterPostBlog.likes, 0)
+})
+
+test.only('checking title or url missing', async () => {
+  const newBlogNoTitle = {
+    _id: '5a422bc61b54a676234d17fc',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0,
+  }
+  const newBlogNoUrl = {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    likes: 2,
+    __v: 0,
+  }
+
+  await api.post('/api/blogs').send(newBlogNoTitle).expect(400)
+  await api.post('/api/blogs').send(newBlogNoUrl).expect(400)
+
 })
 
 after(async () => {
