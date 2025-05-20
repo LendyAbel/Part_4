@@ -57,11 +57,11 @@ test.only('checking "likes" property', async () => {
 
   await api.post('/api/blogs').send(newBlog).expect(201)
 
-  const afterPostBlog = await Blog.findById(newBlog._id, (err, blog)=>{
-    
-  })
-
+  const blogFound = await Blog.findById(newBlog._id)
+  const afterPostBlog = blogFound.toJSON()
   console.log('AFTER POSTING:', afterPostBlog)
+
+  assert.strictEqual(afterPostBlog.likes, 0)
 })
 
 after(async () => {
