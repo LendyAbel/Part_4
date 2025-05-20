@@ -7,6 +7,7 @@ const Blog = require('../models/blog_model')
 
 const app = require('../app')
 const { forEach } = require('lodash')
+const { log } = require('node:console')
 
 const api = supertest(app)
 
@@ -15,13 +16,20 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs)
 })
 
-test.only('Correct blog amount in JSON format', async () => {
+test('Correct blog amount in JSON format', async () => {
   const response = await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test.only('"id" instead "_id"', async () => {
+  const blogs = await helper.blogsInDB()
+  blogs.forEach(blog => {
+    assert(blog.id)
+  })
 })
 
 after(async () => {
