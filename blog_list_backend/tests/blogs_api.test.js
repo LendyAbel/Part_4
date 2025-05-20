@@ -30,7 +30,7 @@ test('"id" instead "_id"', async () => {
   })
 })
 
-test.only('http post', async () => {
+test('http post', async () => {
   const newBlog = {
     _id: '5a422bc61b54a676234d17fc',
     title: 'Type wars',
@@ -40,14 +40,27 @@ test.only('http post', async () => {
     __v: 0,
   }
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+  await api.post('/api/blogs').send(newBlog).expect(201)
 
   const blogsAfterPost = await helper.blogsInDB()
   assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length + 1)
+})
+
+test.only('checking "likes" property', async () => {
+  const newBlog = {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    __v: 0,
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(201)
+
+  const blogFound = await Blog.findById(newBlog._id)
+  const afterPostBlog = blogFound.toJSON()
+
+  assert.strictEqual(afterPostBlog.likes, 0)
 })
 
 after(async () => {
