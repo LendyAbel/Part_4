@@ -59,7 +59,6 @@ test.only('checking "likes" property', async () => {
 
   const blogFound = await Blog.findById(newBlog._id)
   const afterPostBlog = blogFound.toJSON()
-  console.log('AFTER POSTING:', afterPostBlog)
 
   assert.strictEqual(afterPostBlog.likes, 0)
 })
