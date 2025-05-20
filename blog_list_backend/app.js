@@ -5,7 +5,11 @@ const blogRouter = require('./controllers/blog_controller')
 
 const app = express()
 
-const mongoUrl = process.env.MONGODB_URI
+const mongoUrl =
+  process.env.NODE_ENV === 'test'
+    ? process.env.TEST_MONGODB_URI
+    : process.env.MONGODB_URI
+
 mongoose.connect(mongoUrl).then(res => {
   console.log('Connected to MongoDB')
 })
