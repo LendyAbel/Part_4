@@ -32,19 +32,4 @@ const blogsInDB = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
-const postingNewBlog = async () => {
-  const newBlog = {
-    _id: '5a422bc61b54a676234d17fc',
-    title: 'Type wars',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-    __v: 0,
-  }
-
-  const blog = new Blog(newBlog)
-  const savedBlog = await blog.save()
-  console.log('SAVED NEW BLOG')
-  return savedBlog.toJSON()
-}
-
-module.exports = { initialBlogs, blogsInDB, postingNewBlog }
+module.exports = { initialBlogs, blogsInDB }

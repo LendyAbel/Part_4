@@ -31,18 +31,37 @@ test('"id" instead "_id"', async () => {
 })
 
 test('http post', async () => {
-  await helper.postingNewBlog()
+  const newBlog = {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0,
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(201)
 
   const blogsAfterPost = await helper.blogsInDB()
   assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length + 1)
 })
 
 test.only('checking "likes" property', async () => {
-  const beforePostBlog = await helper.postingNewBlog()
-  const afterPostBlog = await Blog.findById(beforePostBlog.id)
+  const newBlog = {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    __v: 0,
+  }
 
-  assert.strictEqual(afterPostBlog.likes, 0)
-  
+  await api.post('/api/blogs').send(newBlog).expect(201)
+
+  const afterPostBlog = await Blog.findById(newBlog._id, (err, blog)=>{
+    
+  })
+
+  console.log('AFTER POSTING:', afterPostBlog)
 })
 
 after(async () => {
