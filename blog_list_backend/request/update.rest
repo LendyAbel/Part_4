@@ -1,0 +1,11 @@
+@noteId = 682d98477638f5734004494e
+
+PUT http://localhost:3003/api/blogs/{{noteId}}
+Content-Type: application/json
+
+{
+    "title": "Post de prueba cambiado",
+    "author": "Lendy Sanchez",
+    "url": "http://alguna_direccion.algun_domino",
+    "likes": 50
+}
