@@ -86,7 +86,7 @@ test('checking title or url missing', async () => {
   assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length)
 })
 
-test.only('http delete', async () => {
+test('http delete', async () => {
   const initialBlogs = await helper.blogsInDB()
   const idToDelete = initialBlogs[0].id
 
@@ -94,6 +94,21 @@ test.only('http delete', async () => {
 
   const finalBlogs = await helper.blogsInDB()
   assert.strictEqual(finalBlogs.length, helper.initialBlogs.length - 1)
+})
+
+test.only('http updating blog', async () => {
+  const initialBlogs = await helper.blogsInDB()
+  const initialBlogToUpdate = initialBlogs[0]
+  const blogUpdated = { ...initialBlogToUpdate, likes: 50 }
+
+  await api.put(`/api/blogs/${initialBlogToUpdate.id}`).send(blogUpdated).expect(200)
+
+  const finalBlogs = await helper.blogsInDB()
+  const finalBlogUpdated = finalBlogs[0]
+
+  assert.notStrictEqual(initialBlogToUpdate.likes, finalBlogUpdated.likes)
+  assert.strictEqual(finalBlogUpdated.likes, 50)
+
 })
 
 after(async () => {
