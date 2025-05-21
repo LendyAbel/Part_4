@@ -1,0 +1,3 @@
+@noteId = 5a422a851b54a676234d17f7
+
+DELETE http://localhost:3003/api/blogs/{{noteId}}
