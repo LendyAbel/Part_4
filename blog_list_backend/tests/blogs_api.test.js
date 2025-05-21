@@ -82,6 +82,8 @@ test.only('checking title or url missing', async () => {
   await api.post('/api/blogs').send(newBlogNoTitle).expect(400)
   await api.post('/api/blogs').send(newBlogNoUrl).expect(400)
 
+  const blogsAfterPost = await helper.blogsInDB()
+  assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length)
 })
 
 after(async () => {
