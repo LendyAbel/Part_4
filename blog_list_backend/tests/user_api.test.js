@@ -43,12 +43,12 @@ describe('User API tests', () => {
     assert(usernames.includes(newUser.username))
   })
 
-  test.only('User creation with invalid data', async () => {
+  test('User creation with short username', async () => {
     const initialUsers = await helper.usersInDb()
     const newUser = {
-      username: 't',
+      username: 'us',
       name: 'Test User',
-      password: 'p',
+      password: 'password123',
     }
     const response = await api
       .post('/api/users')
@@ -58,6 +58,75 @@ describe('User API tests', () => {
 
     assert(response.body.error.includes('must be at least 3 characters long'))
 
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length)
+  })
+
+  test('User creation with short password', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      username: 'testuser',
+      name: 'Test User',
+      password: 'pa',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    assert(response.body.error.includes('must be at least 3 characters long'))
+
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length)
+  })
+
+  test('User creation with duplicate username', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      username: 'root',
+      name: 'Test User',
+      password: 'pasword123',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    assert(response.body.error.includes('expected `username` to be unique'))
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length)
+  })
+
+  test.only('User creation with missing username', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      name: 'Test User',
+      password: 'password123',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    assert(response.body.error.includes('Path `username` is required'))
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length)
+  })
+  
+  test.only('User creation with missing password', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      username: 'usertest',
+      name: 'Test User',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    assert(response.body.error.includes('Password is required'))
     const finalUsers = await helper.usersInDb()
     assert.strictEqual(finalUsers.length, initialUsers.length)
   })
