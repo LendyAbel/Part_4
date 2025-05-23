@@ -3,6 +3,11 @@ const User = require('../models/user_model')
 
 const bcrypt = require('bcrypt')
 
+userRouter.get('/', async (request, response) => {
+  const users = await User.find({})
+  response.json(users)
+})
+
 userRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 

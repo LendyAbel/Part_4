@@ -4,12 +4,13 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./api_test_helper')
 const User = require('../models/user_model')
+const bcrypt = require('bcrypt')
 
 const app = require('../app')
 
 const api = supertest(app)
 
-describe('User API tests', () => {
+describe.only('User API tests', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -22,5 +23,27 @@ describe('User API tests', () => {
     await user.save()
   })
 
-  
+  test('User creation with valid data', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      username: 'testuser',
+      name: 'Test User',
+      password: 'password123',
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length + 1)
+
+    const usernames = finalUsers.map(user => user.username)
+    assert(usernames.includes(newUser.username))
+  })
+})
+
+after(async () => {
+  await mongoose.connection.close()
 })

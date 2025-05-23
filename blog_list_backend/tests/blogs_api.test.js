@@ -96,7 +96,7 @@ test('http delete', async () => {
   assert.strictEqual(finalBlogs.length, helper.initialBlogs.length - 1)
 })
 
-test.only('http updating blog', async () => {
+test('http updating blog', async () => {
   const initialBlogs = await helper.blogsInDB()
   const initialBlogToUpdate = initialBlogs[0]
   const blogUpdated = { ...initialBlogToUpdate, likes: 50 }
