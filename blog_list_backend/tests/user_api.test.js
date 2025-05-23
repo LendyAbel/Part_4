@@ -10,7 +10,7 @@ const app = require('../app')
 
 const api = supertest(app)
 
-describe.only('User API tests', () => {
+describe('User API tests', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -41,6 +41,25 @@ describe.only('User API tests', () => {
 
     const usernames = finalUsers.map(user => user.username)
     assert(usernames.includes(newUser.username))
+  })
+
+  test.only('User creation with invalid data', async () => {
+    const initialUsers = await helper.usersInDb()
+    const newUser = {
+      username: 't',
+      name: 'Test User',
+      password: 'p',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    assert(response.body.error.includes('must be at least 3 characters long'))
+
+    const finalUsers = await helper.usersInDb()
+    assert.strictEqual(finalUsers.length, initialUsers.length)
   })
 })
 
