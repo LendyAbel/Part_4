@@ -4,7 +4,7 @@ const User = require('../models/user_model')
 const bcrypt = require('bcrypt')
 
 userRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs', { user: 0, likes: 0 })
   response.json(users)
 })
 
@@ -13,7 +13,6 @@ userRouter.post('/', async (request, response) => {
   if (!password) {
     return response.status(400).json({ error: 'Password is required' })
   }
-
   if (password.length < 3) {
     return response
       .status(400)
