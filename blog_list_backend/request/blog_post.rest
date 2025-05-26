@@ -1,10 +1,12 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxlbmR5IiwiaWQiOiI2ODM0NWMyMDkzYzVlMjkxN2Y5OWFhYTIiLCJpYXQiOjE3NDgyNjUzODd9.MBtjoPwpRFNaKv-SDbQt_1Azx6pxaeWKSCZ9UxWFZco
+
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "title": "React patterns",
-    "author": "Michael Chan",
-    "url": "https://reactpatterns.com/",
-    "likes": 7,
-    "userId": "6834432b4931c243417ff974"
+    "title": "Trying token authentication",
+    "author": "Lendy Sanchez",
+    "url": "https://alguna_pagina.com",
+    "likes": 34
 }
