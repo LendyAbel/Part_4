@@ -5,8 +5,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "title": "Trying token authentication",
-    "author": "Lendy Sanchez",
+    "title": "asdasdasd",
+    "author": "asdasdasd",
     "url": "https://alguna_pagina.com",
-    "likes": 34
+    "likes": 50
 }
