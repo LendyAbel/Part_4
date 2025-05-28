@@ -1,3 +1,6 @@
-@noteId = 68344151ce19cde4004aef4e
+@noteId = 6836e438f6af59771176582e
+@tokenlendy = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxlbmR5IiwiaWQiOiI2ODM0NWMyMDkzYzVlMjkxN2Y5OWFhYTIiLCJpYXQiOjE3NDgyNjUzODd9.MBtjoPwpRFNaKv-SDbQt_1Azx6pxaeWKSCZ9UxWFZco
+@tokenhellas = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjgzNDQzNjU0OTMxYzI0MzQxN2ZmOTc3IiwiaWF0IjoxNzQ4NDMyMzI5fQ.rjyO8Q_FmfH38vSbP5njFljIPYXyOzVlzihHEg9UQWY
 
 DELETE http://localhost:3003/api/blogs/{{noteId}}
+Authorization: Bearer {{tokenlendy}}

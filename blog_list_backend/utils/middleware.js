@@ -2,6 +2,7 @@ const logger = require('./logger')
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
+  logger.info('Headers:', request.headers)
   logger.info('Path:  ', request.path)
   logger.info('Body:  ', request.body)
   logger.info('---')
@@ -30,8 +31,8 @@ const errorHandler = (error, request, response, next) => {
     return response
       .status(400)
       .json({ error: 'expected `username` to be unique' })
-    //   } else if (error.name === 'JsonWebTokenError') {
-    //     return response.status(401).json({ error: 'token invalid' })
+  } else if (error.name === 'JsonWebTokenError') {
+    return response.status(401).json({ error: 'token invalid' })
     //   } else if (error.name === 'TokenExpiredError') {
     //     return response.status(401).json({
     //       error: 'token expired',
@@ -56,4 +57,9 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
-module.exports = { requestLogger, unknownEndpoint, errorHandler, tokenExtractor }
+module.exports = {
+  requestLogger,
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor,
+}
