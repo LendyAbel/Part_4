@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxlbmR5IiwiaWQiOiI2ODM0NWMyMDkzYzVlMjkxN2Y5OWFhYTIiLCJpYXQiOjE3NDgyNjUzODd9.MBtjoPwpRFNaKv-SDbQt_1Azx6pxaeWKSCZ9UxWFZco
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkxlbmR5IiwiaWQiOiI2ODM4NjU1ODUzM2M5YWQ4NWI0NTA2NDciLCJpYXQiOjE3NDg1MjY0Mzl9.JuyNYwGvu3cy8g3716U96pkqV3rKJSTFEVJDo3TKIdo
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
