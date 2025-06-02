@@ -43,7 +43,7 @@ describe('User API tests', () => {
     assert(usernames.includes(newUser.username))
   })
 
-  test('User creation with short username', async () => {
+  test('User creation with short username fail', async () => {
     const initialUsers = await helper.usersInDb()
     const newUser = {
       username: 'us',
@@ -62,7 +62,7 @@ describe('User API tests', () => {
     assert.strictEqual(finalUsers.length, initialUsers.length)
   })
 
-  test('User creation with short password', async () => {
+  test('User creation with short password fail', async () => {
     const initialUsers = await helper.usersInDb()
     const newUser = {
       username: 'testuser',
@@ -81,7 +81,7 @@ describe('User API tests', () => {
     assert.strictEqual(finalUsers.length, initialUsers.length)
   })
 
-  test('User creation with duplicate username', async () => {
+  test('User creation with duplicate username fail', async () => {
     const initialUsers = await helper.usersInDb()
     const newUser = {
       username: 'root',
