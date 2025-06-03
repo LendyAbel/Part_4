@@ -6,7 +6,6 @@ const helper = require('./api_test_helper')
 const Blog = require('../models/blog_model')
 const User = require('../models/user_model')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 
 const app = require('../app')
 

@@ -1,19 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
-require('dotenv').config()
 const middleware = require('./utils/middleware')
 const blogRouter = require('./controllers/blog_controller')
 const userRouter = require('./controllers/user_controller')
 const loginRouter = require('./controllers/login_controller')
+const config = require('./utils/config')
 
 const app = express()
 
-const mongoUrl =
-  process.env.NODE_ENV === 'test'
-    ? process.env.TEST_MONGODB_URI
-    : process.env.MONGODB_URI
-
-mongoose.connect(mongoUrl).then(res => {
+mongoose.connect(config.MONGODB_URI).then(res => {
   console.log('Connected to MongoDB')
 })
 
