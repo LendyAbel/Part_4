@@ -1,6 +1,6 @@
-const Login = ({ username, password, onChangeUsername, onChangePassword }) => {
+const Login = ({ username, password, onChangeUsername, onChangePassword, loginHandler }) => {
   return (
-    <div>
+    <form onSubmit={loginHandler}>
       <h2>Login</h2>
       <div>
         username:{' '}
@@ -20,7 +20,8 @@ const Login = ({ username, password, onChangeUsername, onChangePassword }) => {
           onChange={onChangePassword}
         />
       </div>
-    </div>
+      <button type="submit">login</button>
+    </form>
   )
 }
 
