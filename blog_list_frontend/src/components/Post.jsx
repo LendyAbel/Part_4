@@ -9,7 +9,7 @@ const Post = ({
 }) => {
   return (
     <div>
-      <h2>Create new blog</h2>
+      <h2 className="subtitle">Create new blog</h2>
       <form onSubmit={postNewBlogHandler}>
         <div>
           Title:{' '}

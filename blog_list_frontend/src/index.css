@@ -1,0 +1,21 @@
+.subtitle {
+  color: blue;
+  font-size: 30px;
+}
+
+.message {
+  font-size:25px;
+  padding: 10px;
+  border: 5px solid;
+  background-color: bisque;
+}
+
+.info {
+  color: green;
+  border-color: green;
+}
+
+.error {
+  color: red;
+  border-color: red;
+}
