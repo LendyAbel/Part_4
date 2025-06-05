@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import Post from './components/Post'
@@ -13,12 +14,14 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState('')
+  const [error,setError] = useState('false')
 
   useEffect(() => {
     getBlogs()
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -36,6 +39,14 @@ const App = () => {
     setBlogs(blogs)
   }
 
+  const showNotification = (message, isError=false) => {
+    setError(isError)
+    setMessage(message)
+    setTimeout(() => {
+      setMessage('')
+    }, 5000)
+  }
+
   const handlerUsernameChange = event => {
     setUsername(event.target.value)
   }
@@ -44,15 +55,15 @@ const App = () => {
     setPassword(event.target.value)
   }
 
-  const handlerTitleChange = event =>{
+  const handlerTitleChange = event => {
     setTitle(event.target.value)
   }
 
-  const handlerAuthorChange = event =>{
+  const handlerAuthorChange = event => {
     setAuthor(event.target.value)
   }
 
-  const handlerUrlChange = event =>{
+  const handlerUrlChange = event => {
     setUrl(event.target.value)
   }
 
@@ -65,8 +76,10 @@ const App = () => {
       blogService.setToken(user.token)
       setUsername('')
       setPassword('')
+      showNotification('Loggin succefully')
       console.log('Logging in with', username, password)
     } catch (error) {
+      showNotification('Wrong credentials', true)
       console.log('Wrong Credentials')
     }
   }
@@ -74,26 +87,35 @@ const App = () => {
   const logoutHandler = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogsappUser')
+    showNotification('Logout sucefully')
   }
 
-  const newBlogHandler = async event =>{
+  const addBlog = async event => {
     event.preventDefault()
     const newBlog = {
       title,
       author,
-      url
+      url,
     }
-    const returnedNote = await blogService.createBlog(newBlog)
-    setBlogs(blogs.concat(returnedNote))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    try{
+      const returnedBlog = await blogService.createBlog(newBlog)
+      setBlogs(blogs.concat(returnedBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      showNotification(`New blog added: ${returnedBlog.title} ${returnedBlog.author}`)
+    }catch(error){
+      console.log(error)
+      showNotification('Blog could not be added', true)
+    }
   }
 
 
 
   return (
     <div>
+      {message && <Notification message={message} error={error} />}
+
       {user === null ? (
         <Login
           username={username}
@@ -105,7 +127,15 @@ const App = () => {
       ) : (
         <div>
           <p>{user.name} logged-in</p>
-          <Post title={title} author={author} url={url} onChangeTitle={handlerTitleChange} onChangeAuthor={handlerAuthorChange} onChangeUrl={handlerUrlChange} postNewBlogHandler={newBlogHandler} />
+          <Post
+            title={title}
+            author={author}
+            url={url}
+            onChangeTitle={handlerTitleChange}
+            onChangeAuthor={handlerAuthorChange}
+            onChangeUrl={handlerUrlChange}
+            postNewBlogHandler={addBlog}
+          />
           <Blogs blogs={blogs} />
           <button onClick={logoutHandler}>Logout</button>
         </div>

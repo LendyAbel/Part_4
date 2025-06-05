@@ -1,7 +1,7 @@
 const Login = ({ username, password, onChangeUsername, onChangePassword, loginHandler }) => {
   return (
     <form onSubmit={loginHandler}>
-      <h2>Login</h2>
+      <h2 className="subtitle">Login</h2>
       <div>
         username:{' '}
         <input
