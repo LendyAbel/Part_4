@@ -9,10 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
   const [message, setMessage] = useState('')
   const [error, setError] = useState('false')
 
@@ -44,23 +41,12 @@ const App = () => {
     }, 5000)
   }
 
-  const handlerUsernameChange = event => {
-    setUsername(event.target.value)
-  }
-
-  const handlerPasswordChange = event => {
-    setPassword(event.target.value)
-  }
-
-  const loginHandler = async event => {
-    event.preventDefault()
+  const loginHandler = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogsappUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
       showNotification('Loggin succefully')
       console.log('Logging in with', username, password)
     } catch (error) {
@@ -94,13 +80,7 @@ const App = () => {
       {message && <Notification message={message} error={error} />}
 
       {user === null ? (
-        <Login
-          username={username}
-          password={password}
-          onChangeUsername={handlerUsernameChange}
-          onChangePassword={handlerPasswordChange}
-          loginHandler={loginHandler}
-        />
+        <Login login={loginHandler} />
       ) : (
         <div>
           <p>
