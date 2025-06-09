@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import Post from './components/Post'
+import ToggleVisibility from './components/ToggleVisibility'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -15,7 +16,9 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [message, setMessage] = useState('')
-  const [error,setError] = useState('false')
+  const [error, setError] = useState('false')
+
+  const createBlogFormRef = useRef()
 
   useEffect(() => {
     getBlogs()
@@ -30,16 +33,12 @@ const App = () => {
     }
   }, [])
 
-  if (!blogs) {
-    return null
-  }
-
   const getBlogs = async () => {
     const blogs = await blogService.getAll()
     setBlogs(blogs)
   }
 
-  const showNotification = (message, isError=false) => {
+  const showNotification = (message, isError = false) => {
     setError(isError)
     setMessage(message)
     setTimeout(() => {
@@ -97,20 +96,21 @@ const App = () => {
       author,
       url,
     }
-    try{
+    try {
       const returnedBlog = await blogService.createBlog(newBlog)
       setBlogs(blogs.concat(returnedBlog))
       setTitle('')
       setAuthor('')
       setUrl('')
-      showNotification(`New blog added: ${returnedBlog.title} ${returnedBlog.author}`)
-    }catch(error){
+      createBlogFormRef.current.toggleVisibility()
+      showNotification(
+        `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
+      )
+    } catch (error) {
       console.log(error)
       showNotification('Blog could not be added', true)
     }
   }
-
-
 
   return (
     <div>
@@ -126,18 +126,25 @@ const App = () => {
         />
       ) : (
         <div>
-          <p>{user.name} logged-in</p>
-          <Post
-            title={title}
-            author={author}
-            url={url}
-            onChangeTitle={handlerTitleChange}
-            onChangeAuthor={handlerAuthorChange}
-            onChangeUrl={handlerUrlChange}
-            postNewBlogHandler={addBlog}
-          />
+          <p>
+            {user.name} logged-in{' '}
+            <button onClick={logoutHandler}>Logout</button>
+          </p>
+          <ToggleVisibility
+            buttonLabel='Create new blog'
+            ref={createBlogFormRef}
+          >
+            <Post
+              title={title}
+              author={author}
+              url={url}
+              onChangeTitle={handlerTitleChange}
+              onChangeAuthor={handlerAuthorChange}
+              onChangeUrl={handlerUrlChange}
+              postNewBlogHandler={addBlog}
+            />
+          </ToggleVisibility>
           <Blogs blogs={blogs} />
-          <button onClick={logoutHandler}>Logout</button>
         </div>
       )}
     </div>
