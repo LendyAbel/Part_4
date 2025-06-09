@@ -9,12 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('false')
 
@@ -46,35 +41,12 @@ const App = () => {
     }, 5000)
   }
 
-  const handlerUsernameChange = event => {
-    setUsername(event.target.value)
-  }
-
-  const handlerPasswordChange = event => {
-    setPassword(event.target.value)
-  }
-
-  const handlerTitleChange = event => {
-    setTitle(event.target.value)
-  }
-
-  const handlerAuthorChange = event => {
-    setAuthor(event.target.value)
-  }
-
-  const handlerUrlChange = event => {
-    setUrl(event.target.value)
-  }
-
-  const loginHandler = async event => {
-    event.preventDefault()
+  const loginHandler = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogsappUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
       showNotification('Loggin succefully')
       console.log('Logging in with', username, password)
     } catch (error) {
@@ -89,19 +61,10 @@ const App = () => {
     showNotification('Logout sucefully')
   }
 
-  const addBlog = async event => {
-    event.preventDefault()
-    const newBlog = {
-      title,
-      author,
-      url,
-    }
+  const addBlog = async newBlog => {
     try {
       const returnedBlog = await blogService.createBlog(newBlog)
       setBlogs(blogs.concat(returnedBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       createBlogFormRef.current.toggleVisibility()
       showNotification(
         `New blog added: ${returnedBlog.title} ${returnedBlog.author}`
@@ -117,13 +80,7 @@ const App = () => {
       {message && <Notification message={message} error={error} />}
 
       {user === null ? (
-        <Login
-          username={username}
-          password={password}
-          onChangeUsername={handlerUsernameChange}
-          onChangePassword={handlerPasswordChange}
-          loginHandler={loginHandler}
-        />
+        <Login login={loginHandler} />
       ) : (
         <div>
           <p>
@@ -134,15 +91,7 @@ const App = () => {
             buttonLabel='Create new blog'
             ref={createBlogFormRef}
           >
-            <Post
-              title={title}
-              author={author}
-              url={url}
-              onChangeTitle={handlerTitleChange}
-              onChangeAuthor={handlerAuthorChange}
-              onChangeUrl={handlerUrlChange}
-              postNewBlogHandler={addBlog}
-            />
+            <Post addBlog={addBlog} />
           </ToggleVisibility>
           <Blogs blogs={blogs} />
         </div>

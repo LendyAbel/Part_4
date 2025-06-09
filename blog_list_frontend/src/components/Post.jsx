@@ -1,15 +1,35 @@
-const Post = ({
-  title,
-  author,
-  url,
-  onChangeTitle,
-  onChangeAuthor,
-  onChangeUrl,
-  postNewBlogHandler,
-}) => {
+import { useState } from 'react'
+
+const Post = ({ addBlog }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const handlerTitleChange = event => {
+    setTitle(event.target.value)
+  }
+  const handlerAuthorChange = event => {
+    setAuthor(event.target.value)
+  }
+  const handlerUrlChange = event => {
+    setUrl(event.target.value)
+  }
+  const postNewBlogHandler = event => {
+    event.preventDefault()
+    const newBlog = {
+      title,
+      author,
+      url,
+    }
+    addBlog(newBlog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
   return (
     <div>
-      <h2 className="subtitle">Create new blog</h2>
+      <h2 className='subtitle'>Create new blog</h2>
       <form onSubmit={postNewBlogHandler}>
         <div>
           Title:{' '}
@@ -17,7 +37,7 @@ const Post = ({
             type='text'
             name='title'
             value={title}
-            onChange={onChangeTitle}
+            onChange={handlerTitleChange}
           />
         </div>
         <div>
@@ -26,7 +46,7 @@ const Post = ({
             type='text'
             name='Author'
             value={author}
-            onChange={onChangeAuthor}
+            onChange={handlerAuthorChange}
           />
         </div>
         <div>
@@ -35,7 +55,7 @@ const Post = ({
             type='text'
             name='Author'
             value={url}
-            onChange={onChangeUrl}
+            onChange={handlerUrlChange}
           />
         </div>
 
