@@ -9,7 +9,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
 
   const handleRemove = () => {
     console.log('Remove clicked')
-    deleteBlog(blog.id)
+    if (window.confirm(`Remove blog Name: ${blog.title} by ${blog.author}`)) {
+      deleteBlog(blog.id)
+    }
   }
 
   const blogStyle = {
