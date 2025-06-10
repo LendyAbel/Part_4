@@ -75,6 +75,17 @@ const App = () => {
     }
   }
 
+  const updateLikes = async id => {
+    try {
+      const blog = blogs.find(blog => blog.id === id)
+      const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
+      const returnedBlog = await blogService.updateBlog(id, updatedBlog)
+      setBlogs(blogs.map(blog => (blog.id !== id ? blog : returnedBlog)))
+    } catch (error) {
+      console.log('ERROR: ', error)
+    }
+  }
+
   return (
     <div>
       {message && <Notification message={message} error={error} />}
@@ -93,7 +104,7 @@ const App = () => {
           >
             <Post addBlog={addBlog} />
           </ToggleVisibility>
-          <Blogs blogs={blogs} />
+          <Blogs blogs={blogs} updateLikes={updateLikes} />
         </div>
       )}
     </div>
