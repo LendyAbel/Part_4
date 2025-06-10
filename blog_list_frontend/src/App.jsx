@@ -91,6 +91,17 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async id => {
+    try {
+      await blogService.deleteBlog(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      showNotification('Blog deleted')
+      console.log(`BLOG WITH ID: ${id} DELETED`)
+    } catch (error) {
+      console.log()
+    }
+  }
+
   return (
     <div>
       {message && <Notification message={message} error={error} />}
@@ -109,7 +120,11 @@ const App = () => {
           >
             <Post addBlog={addBlog} />
           </ToggleVisibility>
-          <Blogs blogs={blogs} updateLikes={updateLikes} />
+          <Blogs
+            blogs={blogs}
+            updateLikes={updateLikes}
+            deleteBlog={deleteBlog}
+          />
         </div>
       )}
     </div>

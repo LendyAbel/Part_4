@@ -1,17 +1,30 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, updateLikes, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
+  const handleRemove = () => {
+    console.log('Remove clicked')
+    if (window.confirm(`Remove blog Name: ${blog.title} by ${blog.author}`)) {
+      deleteBlog(blog.id)
+    }
+  }
+
   const blogStyle = {
-    paddingTop: 10,
+    paddingTop: 2,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
+    marginBottom: 5,
+  }
+  const removeButtonStyle = {
+    border: '3px solid red',
+    backgroundColor: '#ff9191',
+    borderRadius: '10px',
     marginBottom: 5,
   }
 
@@ -29,6 +42,9 @@ const Blog = ({ blog, updateLikes }) => {
             <button onClick={() => updateLikes(blog.id)}>like</button>
           </p>
           <p>{blog.user.name}</p>
+          <button style={removeButtonStyle} onClick={handleRemove}>
+            remove
+          </button>
         </div>
       ) : (
         ''
