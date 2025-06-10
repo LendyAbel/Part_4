@@ -80,7 +80,12 @@ const App = () => {
       const blog = blogs.find(blog => blog.id === id)
       const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
       const returnedBlog = await blogService.updateBlog(id, updatedBlog)
-      setBlogs(blogs.map(blog => (blog.id !== id ? blog : returnedBlog)))
+
+      setBlogs(
+        blogs.map(blog =>
+          blog.id !== id ? blog : { ...returnedBlog, user: blog.user }
+        )
+      )
     } catch (error) {
       console.log('ERROR: ', error)
     }

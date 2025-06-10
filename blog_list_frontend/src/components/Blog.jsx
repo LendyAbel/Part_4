@@ -7,27 +7,6 @@ const Blog = ({ blog, updateLikes }) => {
     setVisible(!visible)
   }
 
-  const fullBlog = () => {
-    return (
-      <div>
-        <p>Title: {blog.title}</p>
-        <p>URL: {blog.url}</p>
-        <p>
-          likes: {blog.likes}{' '}
-          <button onClick={() => updateLikes(blog.id)}>like</button>
-        </p>
-        <p>Author: {blog.author}</p>
-      </div>
-    )
-  }
-  const shortBlog = () => {
-    return (
-      <p>
-        Title: {blog.title} Author: {blog.author}
-      </p>
-    )
-  }
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -38,8 +17,22 @@ const Blog = ({ blog, updateLikes }) => {
 
   return (
     <div style={blogStyle}>
-      {visible ? fullBlog() : shortBlog()}{' '}
-      <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+      <p>
+        Title: {blog.title} Author: {blog.author}{' '}
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+      </p>
+      {visible ? (
+        <div>
+          <p>URL: {blog.url}</p>
+          <p>
+            likes: {blog.likes}{' '}
+            <button onClick={() => updateLikes(blog.id)}>like</button>
+          </p>
+          <p>{blog.user.name}</p>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
