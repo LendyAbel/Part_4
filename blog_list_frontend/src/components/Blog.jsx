@@ -33,7 +33,7 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
       <div className='defalutContainer'>
         <p id='defaultInfo'>
           Title: {blog.title} Author: {blog.author}{' '}
-          <button onClick={toggleVisibility}>
+          <button onClick={toggleVisibility} id='toggleButton'>
             {visible ? 'hide' : 'view'}
           </button>
         </p>
