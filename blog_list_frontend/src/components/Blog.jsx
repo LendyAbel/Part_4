@@ -43,7 +43,7 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
           <p id='urlInfo'>URL: {blog.url}</p>
           <p id='likesInfo'>
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)}>like</button>
+            <button onClick={() => updateLikes(blog.id)} id='likeButton'>like</button>
           </p>
           <p>{blog.user.name}</p>
           <button style={removeButtonStyle} onClick={handleRemove}>
