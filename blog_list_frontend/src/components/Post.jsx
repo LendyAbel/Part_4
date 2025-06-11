@@ -34,6 +34,7 @@ const Post = ({ addBlog }) => {
         <div>
           Title:{' '}
           <input
+            id='titleInput'
             type='text'
             name='title'
             value={title}
@@ -43,6 +44,7 @@ const Post = ({ addBlog }) => {
         <div>
           Author:{' '}
           <input
+            id='authorInput'
             type='text'
             name='Author'
             value={author}
@@ -52,6 +54,7 @@ const Post = ({ addBlog }) => {
         <div>
           Url:{' '}
           <input
+            id='urlInput'
             type='text'
             name='Author'
             value={url}
