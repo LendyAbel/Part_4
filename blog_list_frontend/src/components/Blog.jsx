@@ -30,14 +30,18 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <p>
-        Title: {blog.title} Author: {blog.author}{' '}
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-      </p>
+      <div className='defalutContainer'>
+        <p id='defaultInfo'>
+          Title: {blog.title} Author: {blog.author}{' '}
+          <button onClick={toggleVisibility}>
+            {visible ? 'hide' : 'view'}
+          </button>
+        </p>
+      </div>
       {visible ? (
-        <div>
-          <p>URL: {blog.url}</p>
-          <p>
+        <div className='moreInfoContainer'>
+          <p id='urlInfo'>URL: {blog.url}</p>
+          <p id='likesInfo'>
             likes: {blog.likes}{' '}
             <button onClick={() => updateLikes(blog.id)}>like</button>
           </p>
