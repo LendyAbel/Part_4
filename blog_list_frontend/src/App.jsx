@@ -120,13 +120,15 @@ const App = () => {
           >
             <Post addBlog={addBlog} />
           </ToggleVisibility>
-          <Blogs
-            blogs={blogs}
-            updateLikes={updateLikes}
-            deleteBlog={deleteBlog}
-          />
         </div>
       )}
+      {console.log(user)}
+      <Blogs
+        blogs={blogs}
+        updateLikes={updateLikes}
+        deleteBlog={deleteBlog}
+        userLoggedId={user?.id}
+      />
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, updateLikes, deleteBlog }) => {
+const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
   const [visible, setVisible] = useState(false)
+
+  console.log('BLOG:', blog.user.id)
+  console.log('USERID', userLoggedId)
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -43,12 +46,18 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
           <p id='urlInfo'>URL: {blog.url}</p>
           <p id='likesInfo'>
             likes: {blog.likes}{' '}
-            <button onClick={() => updateLikes(blog.id)} id='likeButton'>like</button>
+            <button onClick={() => updateLikes(blog.id)} id='likeButton'>
+              like
+            </button>
           </p>
           <p>{blog.user.name}</p>
-          <button style={removeButtonStyle} onClick={handleRemove}>
-            remove
-          </button>
+          {userLoggedId === blog.user.id ? (
+            <button style={removeButtonStyle} onClick={handleRemove}>
+              remove
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       ) : (
         ''
