@@ -12,4 +12,9 @@ const createBlog = async (page, title, author, url) => {
   await page.getByRole('button', { name: 'Create' }).click()
 }
 
-export { login, createBlog }
+const openAllBlogsView = async page => {
+  const viewButtons = await page.getByRole('button', { name: 'view' }).all()
+  viewButtons.map(async button => await button.click())
+}
+
+export { login, createBlog, openAllBlogsView }

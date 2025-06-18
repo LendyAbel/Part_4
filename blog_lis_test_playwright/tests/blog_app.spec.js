@@ -1,5 +1,5 @@
 const { test, describe, expect, beforeEach } = require('@playwright/test')
-const { login, createBlog } = require('./helper')
+const { login, createBlog, openAllBlogsView } = require('./helper')
 
 describe('Blog app', () => {
   test.beforeEach(async ({ page, request }) => {
@@ -102,6 +102,32 @@ describe('Blog app', () => {
           .locator('#toggleButton')
           .click()
         await expect(page.getByText('remove')).not.toBeVisible()
+      })
+
+      test('Blogs are sort by likes', async ({ page }) => {
+        const viewButtons = await page.getByRole('button', { name: 'view' }).all()
+        console.log(viewButtons)
+        await viewButtons.map(async button => await button.click())
+        await page.getByText('Url: First Url').waitFor() 
+        await page.getByText('Url: Second Url').waitFor()
+
+        const initialBlogs = await page.locator('.defalutContainer').all()
+        await expect(initialBlogs[0]).toContainText('First Blog')
+        await expect(initialBlogs[1]).toContainText('Second Blog')
+
+        const likeButtons = await page.getByRole('button', {name:'like'}).all()
+        console.log(likeButtons)
+        //Like first blog 1 like
+        await likeButtons[0].click()
+        await page.getByText('likes: 1').waitFor()
+        //Like second blog 2 like
+        await likeButtons[1].click()
+        await likeButtons[1].click()
+        await page.getByText('likes: 2').waitFor()
+
+        const finalBlogs = await page.locator('.defalutContainer').all()
+        await expect(finalBlogs[0]).toContainText('Second Blog')
+        await expect(finalBlogs[1]).toContainText('First Blog')
       })
     })
   })
