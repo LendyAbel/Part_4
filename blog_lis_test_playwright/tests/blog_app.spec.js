@@ -62,14 +62,15 @@ describe('Blog app', () => {
         await page
           .getByText('Title: Second Blog Author: Second Author')
           .waitFor()
+      })
+
+      test('Blog can be liked', async ({ page }) => {
         await page
           .getByRole('paragraph')
           .filter({ hasText: 'Title: First Blog Author:' })
           .locator('#toggleButton')
           .click()
-      })
 
-      test('Blog can be liked', async ({ page }) => {
         await expect(page.getByText('likes: 0')).toBeVisible()
 
         await page.getByRole('button', { name: 'like' }).click()
@@ -77,6 +78,12 @@ describe('Blog app', () => {
       })
 
       test('Blog can be remove', async ({ page }) => {
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: First Blog Author:' })
+          .locator('#toggleButton')
+          .click()
+
         await page.on('dialog', async dialog => {
           await dialog.accept()
         })
@@ -84,6 +91,17 @@ describe('Blog app', () => {
         await page.getByRole('button', { name: 'remove' }).click()
 
         await expect(page.getByText('Blog deleted')).toBeVisible()
+      })
+
+      test('Another user can´t see remove button', async ({ page }) => {
+        await page.getByRole('button', { name: 'Logout' }).click()
+        await login(page, 'Otro', '123')
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: First Blog Author:' })
+          .locator('#toggleButton')
+          .click()
+        await expect(page.getByText('remove')).not.toBeVisible()
       })
     })
   })
