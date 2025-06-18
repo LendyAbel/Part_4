@@ -46,7 +46,7 @@ const Post = ({ addBlog }) => {
           <input
             id='authorInput'
             type='text'
-            name='Author'
+            name='author'
             value={author}
             onChange={handlerAuthorChange}
           />
@@ -56,7 +56,7 @@ const Post = ({ addBlog }) => {
           <input
             id='urlInput'
             type='text'
-            name='Author'
+            name='url'
             value={url}
             onChange={handlerUrlChange}
           />
