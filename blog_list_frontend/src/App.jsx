@@ -98,7 +98,7 @@ const App = () => {
       showNotification('Blog deleted')
       console.log(`BLOG WITH ID: ${id} DELETED`)
     } catch (error) {
-      console.log()
+      console.log(error.response.data.error)
     }
   }
 
