@@ -13,6 +13,14 @@ describe('Blog app', () => {
       },
     })
 
+    await request.post('/api/users', {
+      data: {
+        username: 'Otro',
+        name: 'Otro',
+        password: '123',
+      },
+    })
+
     await page.goto('/')
   })
 
@@ -51,14 +59,31 @@ describe('Blog app', () => {
       beforeEach(async ({ page }) => {
         await createBlog(page, 'First Blog', 'First Author', 'First URL')
         await createBlog(page, 'Second Blog', 'Second Author', 'Second URL')
+        await page
+          .getByText('Title: Second Blog Author: Second Author')
+          .waitFor()
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: First Blog Author:' })
+          .locator('#toggleButton')
+          .click()
       })
 
       test('Blog can be liked', async ({ page }) => {
-        await page.getByRole('button', { name: 'view' }).click()
         await expect(page.getByText('likes: 0')).toBeVisible()
 
         await page.getByRole('button', { name: 'like' }).click()
         await expect(page.getByText('likes: 1')).toBeVisible()
+      })
+
+      test('Blog can be remove', async ({ page }) => {
+        await page.on('dialog', async dialog => {
+          await dialog.accept()
+        })
+
+        await page.getByRole('button', { name: 'remove' }).click()
+
+        await expect(page.getByText('Blog deleted')).toBeVisible()
       })
     })
   })
