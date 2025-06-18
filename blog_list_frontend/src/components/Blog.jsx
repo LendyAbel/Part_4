@@ -3,15 +3,11 @@ import { useState } from 'react'
 const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
   const [visible, setVisible] = useState(false)
 
-  console.log('BLOG:', blog.user.id)
-  console.log('USERID', userLoggedId)
-
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
   const handleRemove = () => {
-    console.log('Remove clicked')
     if (window.confirm(`Remove blog Name: ${blog.title} by ${blog.author}`)) {
       deleteBlog(blog.id)
     }
@@ -51,7 +47,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, userLoggedId }) => {
             </button>
           </p>
           <p>{blog.user.name}</p>
-          {userLoggedId === blog.user.id ? (
+          {userLoggedId === blog.user || blog.user.id ? (
             <button style={removeButtonStyle} onClick={handleRemove}>
               remove
             </button>

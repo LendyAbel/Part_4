@@ -122,7 +122,6 @@ const App = () => {
           </ToggleVisibility>
         </div>
       )}
-      {console.log(user)}
       <Blogs
         blogs={blogs}
         updateLikes={updateLikes}
