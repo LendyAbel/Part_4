@@ -1,5 +1,5 @@
 const { test, describe, expect, beforeEach } = require('@playwright/test')
-const { login, createBlog } = require('./helper')
+const { login, createBlog, openAllBlogsView } = require('./helper')
 
 describe('Blog app', () => {
   test.beforeEach(async ({ page, request }) => {
@@ -102,6 +102,47 @@ describe('Blog app', () => {
           .locator('#toggleButton')
           .click()
         await expect(page.getByText('remove')).not.toBeVisible()
+      })
+
+      test('Blogs are sort by likes', async ({ page }) => {
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: First Blog Author:' })
+          .locator('#toggleButton')
+          .click()
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: Second Blog Author:' })
+          .locator('#toggleButton')
+          .click()
+
+        const initialBlogs = await page.locator('.defalutContainer').all()
+        await expect(initialBlogs[0]).toContainText('First Blog')
+        await expect(initialBlogs[1]).toContainText('Second Blog')
+
+        //Like first blog 1 like
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: First URLlikes: 0 likeremove$/ })
+          .locator('#likeButton')
+          .click()
+        await page.getByText('likes: 1').waitFor()
+        //Like second blog 2 like
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: Second URLlikes: 0 likeremove$/ })
+          .locator('#likeButton')
+          .click()
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: Second URLlikes: 1 likeremove$/ })
+          .locator('#likeButton')
+          .click()
+        await page.getByText('likes: 2').waitFor()
+
+        const finalBlogs = await page.locator('.defalutContainer').all()
+        await expect(finalBlogs[0]).toContainText('Second Blog')
+        await expect(finalBlogs[1]).toContainText('First Blog')
       })
     })
   })
