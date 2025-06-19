@@ -105,24 +105,39 @@ describe('Blog app', () => {
       })
 
       test('Blogs are sort by likes', async ({ page }) => {
-        const viewButtons = await page.getByRole('button', { name: 'view' }).all()
-        console.log(viewButtons)
-        await viewButtons.map(async button => await button.click())
-        await page.getByText('Url: First Url').waitFor() 
-        await page.getByText('Url: Second Url').waitFor()
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: First Blog Author:' })
+          .locator('#toggleButton')
+          .click()
+        await page
+          .getByRole('paragraph')
+          .filter({ hasText: 'Title: Second Blog Author:' })
+          .locator('#toggleButton')
+          .click()
 
         const initialBlogs = await page.locator('.defalutContainer').all()
         await expect(initialBlogs[0]).toContainText('First Blog')
         await expect(initialBlogs[1]).toContainText('Second Blog')
 
-        const likeButtons = await page.getByRole('button', {name:'like'}).all()
-        console.log(likeButtons)
         //Like first blog 1 like
-        await likeButtons[0].click()
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: First URLlikes: 0 likeremove$/ })
+          .locator('#likeButton')
+          .click()
         await page.getByText('likes: 1').waitFor()
         //Like second blog 2 like
-        await likeButtons[1].click()
-        await likeButtons[1].click()
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: Second URLlikes: 0 likeremove$/ })
+          .locator('#likeButton')
+          .click()
+        await page
+          .locator('div')
+          .filter({ hasText: /^URL: Second URLlikes: 1 likeremove$/ })
+          .locator('#likeButton')
+          .click()
         await page.getByText('likes: 2').waitFor()
 
         const finalBlogs = await page.locator('.defalutContainer').all()
